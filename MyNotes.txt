@@ -1,0 +1,628 @@
+React Native (0.57)
+============
+React Native lets you build cross platform mobile apps using only JavaScript. It uses the same design as React, letting you compose a rich mobile UI from declarative components.
+
+Quick Overview
+++++++++++++++
+Unlike other JS mobile frameworks like Ionic,apps built using React Native are not mobile web apps, instead, they are real mobile apps.
+
+	Features:
+	---------
+	React − This is a Framework for building web and mobile apps using JavaScript
+    Native − You can use native components controlled by JavaScript
+    Platforms − React Native supports IOS and Android platform
+
+	Advantages
+	----------
+    Open source − Framework is open source and it uses JS and npm
+    Cross platform − You can share most of your code on different platforms
+	Less expensive - Don't have to develop separtely for iOS/Android
+	Easier to code - Uses existing JS knowledge, no recompiling on change
+	Saves time - reduces time to market
+    Community − The community around React and React Native is large, and you will be able to find any answer you need
+
+	Limitations
+	-----------
+    Native Components − If you want to create native functionality which is not created yet, you will need to write some platform specific code
+	While its not the best option to create a high end apps or games, it can be used to reduce TTM, build quick and responsive mobile apps
+	
+Environment Setup
++++++++++++++++++
+	
+	Prerequisites
+	-------------
+	Node(8+) and npm(as of now version 4 works best)
+		npm install –g npm@4
+	
+	Install react native CLI
+		npm install –g create-react-native-app
+		
+	Creating the project
+	--------------------
+	To create the app, run the below command on CLI
+		create-react-native-app HelloWorld
+		
+	Running the app
+	---------------
+		cd HelloWorld
+		npm start		(starts development server)
+		
+		To run the project, you can either use emulators[Android Studio + SDK (6.0) + AVD / Xcode + Simulator] or Expo client
+		
+UI Components
++++++++++++++
+	Some of the UI components are:
+		TextInput, Picker, Switch, Slider
+		Touchable elements
+		ListView, ScrollView
+		Alerts, Modals, ProgressBars
+		StatusBar
+		TabBarIOS
+		ToolBarAndroid
+		
+	You can even customize your pages so as to control page loading based on device
+	
+Device Interaction APS's
+++++++++++++++++++++++++
+	Some of the API's that allow intercting with the device are:
+		CameraRoll
+		AsyncStorage
+		Geolocation
+		ImageEditor
+		PushNotifications
+		Vibration
+		Share/Messages
+		
+That's enough of intro. Let's see some code now.
+
+1. Basic HelloWorld
++++++++++++++++++++
+	From your project, open App.js. Modify the code as shown below
+	
+	// Importing React and required components from react 
+	import React, { Component } from 'react';
+	// Importing components: View for display 
+	// and Text to show text
+	// from react-native
+	import { View, Text } from 'react-native';
+	
+	// Creating our first component by extending Component
+	export default class HelloWorldApp extends Component {
+		// You already know this guy from 
+		render() {
+			// Returns JSX for the component to be rendered
+			return (
+				// Starting a View for Display
+				<View>
+					// Displaying non-editable text
+					<Text>Hello world :)</Text>
+				</View>
+			);
+		}
+	}
+
+Voila... We got pur first react app. But its just plain text. Let's make some modifications to it.
+
+2. Adding styles
+++++++++++++++++
+	import React, { Component } from 'react';
+	// Import StyleSheet for styling
+	import { View, Text, StyleSheet } from 'react-native';
+	
+	export default class HelloWorldApp extends Component {
+		render() {
+			return (
+				<View style={styles.container}>
+					<Text style={styles.paragraph}>Hello world :)</Text>
+				</View>
+			);
+		}
+	}	
+
+	const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: Constants.statusBarHeight,
+			backgroundColor: '#ecf0f1',
+		},
+		paragraph: {
+			margin: 24,
+			fontSize: 18,
+			fontWeight: 'bold',
+			textAlign: 'center',
+			color: '#34495e',
+		}
+	});
+
+And we look good ;). Let's now make the component do more interesting things by using Props.
+	
+3. Props
+++++++++
+	Most components can be customized when they are created, with different parameters. These creation parameters are called props. For example, one basic React Native component is the Image. 
+	When you create an image, you can use a prop named source to control what image it shows:
+	import React, { Component } from 'react';
+	import { AppRegistry, Image } from 'react-native';
+
+	export default class Bananas extends Component {
+	  render() {
+		// embed variable pic into JSX
+		let pic = {
+		  uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+		};
+		return (
+		  // Image is s basic React Native component
+		  // Use prop 'source' to control image source
+		  <Image source={pic} style={{width: 193, height: 110}}/>
+		);
+	  }
+	}
+	
+	Let's try using props in our app:
+	---------------------------------
+	
+	import React, { Component } from 'react';
+	// Import StyleSheet for styling
+	import { View, Text, StyleSheet } from 'react-native';
+	
+	class Greeting extends Component {
+		render() {
+			return (
+				<Text style={styles.paragraph}>{this.props.message}</Text>
+			);
+		}
+	}
+
+	export default class App extends Component {
+		render() {
+			return (
+				<View style={styles.container}>
+					<Greeting message="Welcome to React Native"/>
+				</View>
+			);
+		}
+	}	
+
+	const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: Constants.statusBarHeight,
+			backgroundColor: '#ecf0f1',
+		},
+		paragraph: {
+			margin: 24,
+			fontSize: 18,
+			fontWeight: 'bold',
+			textAlign: 'center',
+			color: '#34495e',
+		}
+	});
+	
+With props and the basic Text, Image, and View components, you can build a wide variety of static screens. To learn how to make your app change over time, you need to learn about State.
+
+4. State
+++++++++
+	There are two types of data that control a component: props and state. props are set by the parent and they are fixed throughout the lifetime of a component. For data that is going to change, we have to use state. In general, you should initialize state in the constructor, and then call setState when you want to change it.
+	
+	import React, { Component } from 'react';
+	// Import StyleSheet for styling
+	import { View, Text, StyleSheet } from 'react-native';
+	
+	class Greeting extends Component {
+		constructor(){
+			super();
+			this.state ={
+				name: 'NJP'
+			}
+		}
+		render() {
+			return (
+				<View>
+					<Text style={styles.paragraph}>Hello {this.state.name}</Text>
+					<Text style={styles.paragraph}>{this.props.message}</Text>
+			);
+		}
+	}
+
+	export default class App extends Component {
+		render() {
+			return (
+				<View style={styles.container}>
+					<Greeting message="Welcome to React Native"/>
+				</View>
+			);
+		}
+	}	
+
+	const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: Constants.statusBarHeight,
+			backgroundColor: '#ecf0f1',
+		},
+		paragraph: {
+			margin: 24,
+			fontSize: 18,
+			fontWeight: 'bold',
+			textAlign: 'center',
+			color: '#34495e',
+		}
+	});
+	
+5. State with Behaviour
++++++++++++++++++++++++
+	import React, { Component } from 'react';
+	// Import StyleSheet for styling
+	import { View, Text, StyleSheet } from 'react-native';
+	
+	class Greeting extends Component {
+		constructor(){
+			super();
+			this.state ={
+				name: 'NJP',
+				//change this to 'false' for second time
+				showName: true
+			}
+		}
+		render() {
+			let name = this.state.showName ? this.state.name:'Guest'
+			return (
+				<View>
+					<Text style={styles.paragraph}>Hello {name}</Text>
+					<Text style={styles.paragraph}>{this.props.message}</Text>
+			);
+		}
+	}
+
+	export default class App extends Component {
+		render() {
+			return (
+				<View style={styles.container}>
+					<Greeting message="Welcome to React Native"/>
+				</View>
+			);
+		}
+	}	
+
+	const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: Constants.statusBarHeight,
+			backgroundColor: '#ecf0f1',
+		},
+		paragraph: {
+			margin: 24,
+			fontSize: 18,
+			fontWeight: 'bold',
+			textAlign: 'center',
+			color: '#34495e',
+		}
+	});
+	
+6. Props within state and default
++++++++++++++++++++++++++++++++++
+	import React, { Component } from 'react';
+	import { View, Text, StyleSheet } from 'react-native';
+	
+	class Greeting extends Component {
+		constructor(props){
+			super(props);
+			this.state ={
+				name: 'NJP',
+				showName: true,
+				message:this.props.message
+			}
+		}
+		
+		static defaultProps = {
+			message: 'Welcome from default'
+		}
+		
+		render() {
+			let name = this.state.showName ? this.state.name:'Guest'
+			return (
+				<View>
+					<Text style={styles.paragraph}>Hello {name}</Text>
+					<Text style={styles.paragraph}>{this.props.message}</Text>
+			);
+		}
+	}
+
+	export default class App extends Component {
+		render() {
+			return (
+				<View style={styles.container}>
+					<Greeting message="Welcome to React Native"/>
+				</View>
+			);
+		}
+	}	
+
+	const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: Constants.statusBarHeight,
+			backgroundColor: '#ecf0f1',
+		},
+		paragraph: {
+			margin: 24,
+			fontSize: 18,
+			fontWeight: 'bold',
+			textAlign: 'center',
+			color: '#34495e',
+		}
+	});
+	
+While all is well, the code looks a bit cluttered. So let's clean it up a bit. 
+
+7. Importing Component
+++++++++++++++++++++++
+	Create Greeting.js in components folder woth the code below
+	
+	import React, { Component } from 'react';
+	import { Text, View, StyleSheet } from 'react-native';
+	
+	export default class Greeting extends Component {
+	  constructor(props){
+		  super(props);
+		  this.state = {
+			name: 'NJP',
+			showName: true,
+			message: this.props.message
+		  }
+		}
+
+		static defaultProps = {
+		  message: 'Welcome from default'
+		}
+
+		render() {
+		  let name = this.state.showName ? this.state.name:'Guest'
+				return (
+			<View>
+				<Text style={styles.paragraph}>Hello {name}</Text>
+				<Text style={styles.paragraph}>{this.state.message}</Text>
+			</View>
+				);
+			}
+	}
+
+	const styles = StyleSheet.create({
+		paragraph: {
+				margin: 24,
+				fontSize: 18,
+				fontWeight: 'bold',
+				textAlign: 'center',
+				color: '#34495e',
+			}
+	})
+
+	And you App.js will be
+	----------------------
+	import React, { Component } from 'react';
+	import { Text, View, StyleSheet } from 'react-native';
+
+	import Greeting from './components/Greeting'
+
+	export default class App extends Component {
+	  render() {
+		return (
+		  <View style={styles.container}>
+			<Greeting message="Welcome to React Native" />
+		  </View>
+		);
+	  }
+	}
+
+	const styles = StyleSheet.create({
+	  container: {
+				flex: 1,
+				alignItems: 'center',
+				justifyContent: 'center',
+				paddingTop: Constants.statusBarHeight,
+				backgroundColor: '#ecf0f1',
+			}
+	})
+	
+So nice. Lets now check on how to handle text inputs
+
+8.TextInput
+-----------
+	Create a component WithTextInput.js with the below code
+	
+	import React, { Component } from 'react';
+	import { Text, View, StyleSheet, TextInput } from 'react-native';
+	
+	export default class WithTextInput extends Component {
+	  constructor(props){
+		  super(props);
+		  this.state = {
+			name: 'NJP',
+			showName: true,
+			message: this.props.message
+		  }
+		}
+
+		static defaultProps = {
+		  message: 'Welcome from default'
+		}
+
+		onChangeText(value){
+		  this.setState({
+			name: value
+		  })
+		}
+
+		render() {
+		  let name = this.state.showName ? this.state.name:'Guest'
+				return (
+			<View>
+			  <TextInput 
+				style={{height: 40}} 
+				placeholder='Enter Name' 
+				value={this.state.name}
+				onChangeText = {(value) => this.onChangeText(value)}
+			  />
+				<Text style={styles.paragraph}>Hello {name}</Text>
+			    <Text style={styles.paragraph}>{this.state.message}</Text>
+			</View>
+				);
+			}
+	}
+
+	const styles = StyleSheet.create({
+		paragraph: {
+				margin: 24,
+				fontSize: 18,
+				fontWeight: 'bold',
+				textAlign: 'center',
+				color: '#34495e',
+			}
+	})
+	
+Make changes to App.js and observe the output. In case you don't want to use onChange, you can use onSubmitEditing or onFocus, OnBlur etc...
+
+9. Switch
++++++++++
+	Create a component WithSwitch.js with the below code
+	
+	import React, { Component } from 'react';
+	import { Text, View, StyleSheet, Switch } from 'react-native';
+	
+	export default class WithSwitch extends Component {
+	  constructor(props){
+		  super(props);
+		  this.state = {
+			name: 'NJP',
+			showName: true,
+			message: this.props.message
+		  }
+		}
+
+		static defaultProps = {
+		  message: 'Welcome from default'
+		}
+
+		onSwitchChange(value){
+		  this.setState({
+			showName: value
+		  })
+		}
+
+		render() {
+		  let name = this.state.showName ? this.state.name:'Guest'
+				return (
+			<View>
+					  <Text style={styles.paragraph}>Hello {name}</Text>
+			  <Switch
+				value={this.state.showName}
+				onValueChange={(value) => this.onSwitchChange(value)}
+			  />
+			  <Text style={styles.paragraph}>{this.state.message}</Text>
+			</View>
+				);
+			}
+	}
+
+	const styles = StyleSheet.create({
+		paragraph: {
+				margin: 24,
+				fontSize: 18,
+				fontWeight: 'bold',
+				textAlign: 'center',
+				color: '#34495e',
+			}
+	})
+	
+There is also slider and picker available. But you can try that out later. Next up, button :)
+	
+10. Touchables
+++++++++++++++
+	Create a component WithTouchables.js with the below code
+	
+	import React, { Component } from 'react';
+	import { Text, View, StyleSheet, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
+	import { Constants } from 'expo';
+
+	export default class Touchables extends Component {
+	  onPressButton() {
+		Alert.alert('You tapped the button!')
+	  }
+
+	  onLongPressButton() {
+		Alert.alert('You long-pressed the button!')
+	  }
+
+
+	  render() {
+		return (
+		  <View style={styles.container}>
+			<Button
+				onPress={this.onPressButton}
+				title="Press Me"
+				color="#841584"
+			  />
+			<TouchableHighlight 
+			  onPress={this.onPressButton} 
+			  underlayColor="white">
+			  <View style={styles.button}>
+				<Text style={styles.buttonText}>TouchableHighlight</Text>
+			  </View>
+			</TouchableHighlight>
+			<TouchableOpacity 
+			  onPress={this.onPressButton}>
+			  <View style={styles.button}>
+				<Text style={styles.buttonText}>TouchableOpacity</Text>
+			  </View>
+			</TouchableOpacity>
+			<TouchableHighlight 
+			  onPress={this.onPressButton} 
+			  onLongPress={this.onLongPressButton} underlayColor="white">
+			  <View style={styles.button}>
+				<Text style={styles.buttonText}>Touchable with Long Press</Text>
+			  </View>
+			</TouchableHighlight>
+		  </View>
+		);
+	  }
+	}
+
+	const styles = StyleSheet.create({
+	  container: {
+		paddingTop: 60,
+		alignItems: 'center'
+	  },
+	  button: {
+		marginBottom: 30,
+		width: 260,
+		alignItems: 'center',
+		backgroundColor: '#2196F3'
+	  },
+	  buttonText: {
+		padding: 20,
+		color: 'white'
+	  }
+	});
+
+Which "Touchable" component you use will depend on what kind of feedback you want to provide:
+
+    Generally, you can use TouchableHighlight anywhere you would use a button or link on web. The view's background will be darkened when the user presses down on the button.
+
+    TouchableOpacity can be used to provide feedback by reducing the opacity of the button, allowing the background to be seen through while the user is pressing down.
+	
+	You may consider using TouchableNativeFeedback on Android to display ink surface reaction ripples that respond to the user's touch.
+
+    If you need to handle a tap gesture but you don't want any feedback to be displayed, use TouchableWithoutFeedback.
+
+In some cases, you may want to detect when a user presses and holds a view for a set amount of time. These long presses can be handled by passing a function to the onLongPress props of any of the "Touchable" components.	
+
+11. 
